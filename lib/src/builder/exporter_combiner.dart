@@ -9,6 +9,7 @@ import 'package:glob/glob.dart';
 class ExporterCombiner extends Builder {
   @override
   FutureOr<void> build(BuildStep buildStep) async {
+    print(buildStep.inputId.path);
     // prepare sources
     final List<AssetId> exporterAssetIds =
         await buildStep.findAssets(Glob("**/*.exporter.json")).toList();
@@ -23,13 +24,12 @@ class ExporterCombiner extends Builder {
 
     // write to file
     String content = TemplateUtils.generateString(exporterAssetCaches);
-    String package = buildStep.inputId.package;
-    AssetId outputId = AssetId(package, "lib/generated/exporter.dart");
+    AssetId outputId = buildStep.inputId.changeExtension(".dart");
     await buildStep.writeAsString(outputId, content);
   }
 
   @override
   Map<String, List<String>> get buildExtensions => {
-        "main.dart": ["/generated/exporter.dart"],
+        "exporter.locator": ["exporter.dart"],
       };
 }
