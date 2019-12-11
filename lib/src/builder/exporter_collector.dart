@@ -4,6 +4,7 @@ import 'package:build/build.dart';
 import 'package:exporter/src/annotation/export.dart';
 import 'package:exporter/src/builder/object/exporter_cache_object.dart';
 import 'package:source_gen/source_gen.dart';
+import 'package:path/path.dart' as p;
 
 class ExporterCollector extends Builder {
   static TypeChecker exporterTypeChecker = TypeChecker.fromRuntime(Export);
@@ -17,8 +18,13 @@ class ExporterCollector extends Builder {
     final String schema = buildStep.inputId.uri.scheme;
     if (schema == "asset") {
       path = uri.replaceFirst(RegExp(r"asset:\w+/"), "");
+      path = p.relative(path, from: "lib/generated/exporter/");
     } else if (schema == "package") {
       path = uri;
+    }
+
+    if (!path.startsWith("lib")) {
+      return;
     }
 
     LibraryReader libraryReader = LibraryReader(await buildStep.inputLibrary);

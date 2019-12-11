@@ -9,7 +9,6 @@ import 'package:glob/glob.dart';
 class ExporterCombiner extends Builder {
   @override
   FutureOr<void> build(BuildStep buildStep) async {
-    print(buildStep.inputId.path);
     // prepare sources
     final List<AssetId> exporterAssetIds =
         await buildStep.findAssets(Glob("**/*.exporter.json")).toList();
