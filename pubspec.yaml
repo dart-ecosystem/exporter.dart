@@ -11,7 +11,7 @@ environment:
 dependencies:
   build: ^1.2.2
   glob: ^1.2.0
-  matchable_builder: ^0.3.0
+  matchable_builder: ^0.3.1
   generated_locator: ^1.1.0
   path: ^1.6.4
 
