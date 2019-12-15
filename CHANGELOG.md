@@ -1,3 +1,6 @@
+## 1.0.1
+- Use matchable builder
+
 ## 1.0.0
 - Use generated locator
 - Ignore files outside lib folder

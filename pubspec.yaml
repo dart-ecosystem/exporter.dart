@@ -1,7 +1,7 @@
 name: exporter
 description: >
   A library generates a single export.
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/dart-ecosystem/exporter.dart
 author: Copydog <775150@qq.com>
 
@@ -10,8 +10,8 @@ environment:
 
 dependencies:
   build: ^1.2.2
-  source_gen: ^0.9.4+6
   glob: ^1.2.0
+  matchable_builder: ^0.3.0
   generated_locator: ^1.1.0
   path: ^1.6.4
 

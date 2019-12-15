@@ -8,6 +8,11 @@ import 'package:glob/glob.dart';
 
 class ExporterCombiner extends Builder {
   @override
+  Map<String, List<String>> get buildExtensions => {
+        "exporter.locator": ["exporter.dart"],
+      };
+
+  @override
   FutureOr<void> build(BuildStep buildStep) async {
     // prepare sources
     final List<AssetId> exporterAssetIds =
@@ -26,9 +31,4 @@ class ExporterCombiner extends Builder {
     AssetId outputId = buildStep.inputId.changeExtension(".dart");
     await buildStep.writeAsString(outputId, content);
   }
-
-  @override
-  Map<String, List<String>> get buildExtensions => {
-        "exporter.locator": ["exporter.dart"],
-      };
 }
