@@ -3,4 +3,4 @@ import 'package:exporter/src/builder/exporter_collector.dart';
 import 'package:exporter/src/builder/exporter_combiner.dart';
 
 Builder exporterCollector(BuilderOptions options) => ExporterCollector(options);
-Builder exporterCombiner(BuilderOptions options) => ExporterCombiner();
+Builder exporterCombiner(BuilderOptions options) => ExporterCombiner(options);

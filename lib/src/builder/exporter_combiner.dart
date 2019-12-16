@@ -1,31 +1,27 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:build/build.dart';
-import 'package:exporter/src/builder/object/exporter_cache_object.dart';
+import 'package:exporter/src/builder/exporter_cache.dart';
 import 'package:exporter/src/builder/util/TemplateUtils.dart';
-import 'package:glob/glob.dart';
+import 'package:matchable_builder/matchable_builder.dart';
 
-class ExporterCombiner extends Builder {
+class ExporterCombiner extends MatchableCombiningBuilder {
+  ExporterCombiner(BuilderOptions options) : super(options);
+
   @override
   Map<String, List<String>> get buildExtensions => {
         "exporter.locator": ["exporter.dart"],
       };
 
   @override
-  FutureOr<void> build(BuildStep buildStep) async {
-    // prepare sources
-    final List<AssetId> exporterAssetIds =
-        await buildStep.findAssets(Glob("**/*.exporter.json")).toList();
+  Map<String, CacheResolver> get resolveCaches => {
+        "**/*.exporter.json": ExporterCache.fromJson,
+      };
 
-    final List<ExporterCacheObject> exporterAssetCaches = [];
-
-    // deserialize
-    for (var assetId in exporterAssetIds) {
-      var code = json.decode(await buildStep.readAsString(assetId));
-      exporterAssetCaches.add(ExporterCacheObject.fromJson(code));
-    }
-
+  @override
+  FutureOr<void> generate(Map<String, List<Object>> resolvedCaches, BuildStep buildStep) async {
+    List<ExporterCache> exporterAssetCaches =
+        List<ExporterCache>.from(resolvedCaches["**/*.exporter.json"]);
     // write to file
     String content = TemplateUtils.generateString(exporterAssetCaches);
     AssetId outputId = buildStep.inputId.changeExtension(".dart");
